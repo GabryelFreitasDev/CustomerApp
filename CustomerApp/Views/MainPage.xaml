@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePages xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CustomerApp.ViewModels"
+             xmlns:m="clr-namespace:CustomerApp.Models"
+             xmlns:local="clr-namespace:CustomerApp.Views"
+             x:Class="CustomerApp.Views.MainPage"
+             x:Name="MainPageRef"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+    <local:BasePages.BindingContext>
+        <vm:MainViewModel />
+    </local:BasePages.BindingContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <Border Grid.Row="0" 
+                BackgroundColor="{StaticResource Primary}" 
+                Stroke="Transparent"
+                StrokeThickness="0" 
+                Padding="20,25,20,20">
+            <Border.Shadow>
+                <Shadow Brush="Black" Radius="8" Opacity="0.3" Offset="0,4" />
+            </Border.Shadow>
+            <StackLayout>
+                <Label Text="BTG Pactual" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource White}" 
+                       HorizontalOptions="Center" />
+                <Label Text="Gerenciamento de Clientes" 
+                       FontSize="16" 
+                       TextColor="{StaticResource White}" 
+                       HorizontalOptions="Center" 
+                       Opacity="0.9" />
+            </StackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1" Padding="15,20,15,15">
+            <StackLayout>
+                <Grid ColumnDefinitions="*, Auto" Margin="5,0,0,15">
+                    <Label Grid.Column="0"
+                           Text="Lista de Clientes" 
+                           FontSize="22" 
+                           FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+                    <Button Grid.Column="1"
+                            Command="{Binding AddClienteCommand}"
+                            BackgroundColor="{StaticResource Transparent}"
+                            TextColor="{StaticResource Green}"
+                            Text="Adicionar"
+                            ImageSource="adicionar.png"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HeightRequest="10">
+                    </Button>
+                </Grid>
+
+                <CollectionView ItemsSource="{Binding ListCliente}"
+                                BackgroundColor="Transparent"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                                    Stroke="{StaticResource Gray200}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="0"
+                                    Margin="2">
+                                <Border.Shadow>
+                                    <Shadow Brush="Gray" Radius="5" Opacity="0.15" Offset="0,2" />
+                                </Border.Shadow>
+
+                                <Grid ColumnDefinitions="*, Auto" Padding="20,15">
+                                    <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                                        <StackLayout Grid.Row="0" Grid.Column="0" 
+                                                     Orientation="Horizontal" 
+                                                     Spacing="5"
+                                                     VerticalOptions="Center">
+                                            <Label Text="{Binding Name}" 
+                                                   FontSize="18" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                            <Label Text="{Binding LastName}" 
+                                                   FontSize="18" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="1" Grid.Column="0"
+                                                     Orientation="Horizontal"
+                                                     Spacing="5"
+                                                     Margin="0,5,0,0">
+                                            <Label Text="Idade:" FontSize="14" VerticalOptions="Center" />
+                                            <Label Text="{Binding Age, StringFormat='{0} anos'}" 
+                                                   FontSize="14" 
+                                                   TextColor="{StaticResource Gray600}" 
+                                                   LineBreakMode="TailTruncation"
+                                                   MaxLines="2"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                                     Orientation="Horizontal"
+                                                     Spacing="5"
+                                                     Margin="0,5,0,0">
+                                            <Label Text="Endereço:" FontSize="14" VerticalOptions="Center" />
+                                            <Label Text="{Binding Address}" 
+                                                   FontSize="14" 
+                                                   TextColor="{StaticResource Gray600}" 
+                                                   LineBreakMode="TailTruncation"
+                                                   MaxLines="2"
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
+                                    </Grid>
+                                    <Grid Grid.Column="1" ColumnDefinitions="Auto,Auto">
+                                        <Button Grid.Column="0"
+                                                HeightRequest="10"
+                                                BackgroundColor="{StaticResource Transparent}"
+                                                TextColor="{StaticResource Primary}"
+                                                Text="Editar"
+                                                ImageSource="editar.png"
+                                                Command="{Binding Source={x:Reference MainPageRef}, Path=BindingContext.EditClienteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                VerticalOptions="Center">
+                                        </Button>
+
+                                        <Button Grid.Column="1"
+                                                HeightRequest="10"
+                                                BackgroundColor="{StaticResource Transparent}"
+                                                TextColor="Red"
+                                                Text="Excluir"
+                                                ImageSource="excluir.png"
+                                                Command="{Binding Source={x:Reference MainPageRef}, Path=BindingContext.RemoveClienteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                VerticalOptions="Center">
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</local:BasePages>
